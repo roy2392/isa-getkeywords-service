@@ -78,6 +78,22 @@ jobs:
             google_service_account.cloud_scheduler_sa \
             projects/${{ env.PROJECT_ID }}/serviceAccounts/isa-keywords-scheduler@${{ env.PROJECT_ID }}.iam.gserviceaccount.com || true
 
+          # Import Cloud Run service if it exists
+          terraform import -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="service_name=${{ env.SERVICE_NAME }}" \
+            -var="image_url=${{ env.IMAGE_URL }}" \
+            google_cloud_run_v2_service.main \
+            projects/${{ env.PROJECT_ID }}/locations/${{ env.REGION }}/services/${{ env.SERVICE_NAME }} || true
+
+          # Import Cloud Scheduler job if it exists
+          terraform import -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="service_name=${{ env.SERVICE_NAME }}" \
+            -var="image_url=${{ env.IMAGE_URL }}" \
+            google_cloud_scheduler_job.job \
+            projects/${{ env.PROJECT_ID }}/locations/${{ env.REGION }}/jobs/${{ env.SERVICE_NAME }}-trigger || true
+
       - name: Terraform Apply
         working-directory: ./terraform
         run: |
