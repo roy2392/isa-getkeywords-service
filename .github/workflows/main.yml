@@ -59,6 +59,25 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
+      - name: Import Existing Resources
+        working-directory: ./terraform
+        continue-on-error: true
+        run: |
+          # Import service accounts if they exist
+          terraform import -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="service_name=${{ env.SERVICE_NAME }}" \
+            -var="image_url=${{ env.IMAGE_URL }}" \
+            google_service_account.cloud_run_sa \
+            projects/${{ env.PROJECT_ID }}/serviceAccounts/isa-keywords-run@${{ env.PROJECT_ID }}.iam.gserviceaccount.com || true
+
+          terraform import -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="service_name=${{ env.SERVICE_NAME }}" \
+            -var="image_url=${{ env.IMAGE_URL }}" \
+            google_service_account.cloud_scheduler_sa \
+            projects/${{ env.PROJECT_ID }}/serviceAccounts/isa-keywords-scheduler@${{ env.PROJECT_ID }}.iam.gserviceaccount.com || true
+
       - name: Terraform Apply
         working-directory: ./terraform
         run: |
