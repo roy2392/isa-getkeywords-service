@@ -197,12 +197,19 @@ terraform plan
 terraform apply
 ```
 
-### 4. Set Up CI/CD (Optional)
+### 4. Set Up CI/CD (Automated)
+
+The CI/CD pipeline automatically builds, tests, and deploys on every push to `main` branch.
 
 Configure GitHub Secrets:
 - `GCP_PROJECT_ID`: Your GCP project ID
-- `WIF_PROVIDER`: Workload Identity Federation provider
-- `WIF_SERVICE_ACCOUNT`: Service account for WIF
+- `GCP_SA_KEY`: Service account JSON key with deployment permissions
+
+The pipeline will:
+1. Build Docker image for linux/amd64
+2. Push to Artifact Registry
+3. Deploy with Terraform
+4. Run health checks and integration tests
 
 Push to `main` branch to trigger automatic deployment.
 
@@ -329,7 +336,7 @@ Trigger keyword generation job (called by Cloud Scheduler)
 - Secrets stored in GCP Secret Manager
 - Service account with least-privilege IAM roles
 - Cloud Run requires authentication (not publicly accessible)
-- Workload Identity Federation for CI/CD (no service account keys)
+- GitHub Actions uses service account with limited deployment permissions
 
 ## Related Services
 
