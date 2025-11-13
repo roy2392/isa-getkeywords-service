@@ -12,7 +12,7 @@ load_dotenv()
 app = FastAPI(
     title="ISA GetKeywords Service",
     description="Microservice to generate Hebrew keywords for stocks and finance industry using Gemini AI",
-    version="1.0.0"
+    version="1.0.1"
 )
 
 
@@ -24,7 +24,7 @@ async def health_check():
     return {
         "status": "healthy",
         "service": "isa-getkeywords-service",
-        "version": "1.0.0"
+        "version": "1.0.1"
     }
 
 
