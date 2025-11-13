@@ -1,0 +1,7 @@
+project_id = "your-gcp-project-id"
+region     = "us-central1"
+service_name = "isa-getkeywords-service"
+image_url  = "us-central1-docker.pkg.dev/your-project/your-repo/isa-getkeywords-service:latest"
+schedule   = "0 2 * * *"  # Daily at 2 AM UTC
+
+# Note: This service uses existing BigQuery table: pwcnext-sandbox01.telegram.keys
